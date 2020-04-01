@@ -480,7 +480,9 @@ class ContractContract(models.Model):
             date_ref = fields.Date.context_today(self)
         domain = self._get_contracts_to_invoice_domain(date_ref)
         contracts_to_invoice = self.search(domain)
-        return contracts_to_invoice._recurring_create_invoice(date_ref)
+        for contract in contracts_to_invoice:
+            res = contract._recurring_create_invoice(date_ref)
+        return res
 
     @api.multi
     def action_terminate_contract(self):
